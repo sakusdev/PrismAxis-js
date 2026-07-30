@@ -1,0 +1,19 @@
+{
+  "name": "@prismaxis/example-basic-scene",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prismaxis/core": "workspace:*",
+    "@prismaxis/renderer-three": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "8.1.1"
+  }
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="description" content="PrismAxis.js basic scene: a rotating PAX cube." />
+    <title>PrismAxis.js — Basic Scene</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <canvas id="game" aria-label="PrismAxis.js 3D scene"></canvas>
+
+      <header class="brand-panel glass-panel">
+        <span class="eyebrow">PAX / BASIC SCENE</span>
+        <h1>PrismAxis.js</h1>
+        <p>Build worlds in the browser.</p>
+      </header>
+
+      <aside class="stats-panel glass-panel" aria-live="polite">
+        <span>FPS</span>
+        <strong id="fps">—</strong>
+        <span id="status" class="status" data-state="starting">STARTING</span>
+      </aside>
+
+      <nav class="controls glass-panel" aria-label="Engine controls">
+        <button id="start" type="button">Start</button>
+        <button id="pause" type="button">Pause</button>
+        <button id="resume" type="button">Resume</button>
+        <button id="stop" class="danger" type="button">Stop</button>
+      </nav>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
