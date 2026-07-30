@@ -1,0 +1,33 @@
+{
+  "name": "prismaxis-js",
+  "version": "0.1.0-alpha.0",
+  "private": true,
+  "description": "PrismAxis.js (PAX) — a Unity-inspired 3D game engine for the browser.",
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "dev": "pnpm --filter @prismaxis/example-basic-scene dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "pnpm -r --if-present typecheck"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.0",
+    "globals": "^17.8.0",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.0",
+    "typescript-eslint": "^8.65.0",
+    "vite": "8.1.1",
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,10 @@
+packages:
+  - "packages/*"
+  - "examples/*"
+allowBuilds:
+  esbuild: true
+confirmModulesPurge: false
+managePackageManagerVersions: false
+overrides:
+  vite: 8.1.1
+storeDir: .pnpm-store
