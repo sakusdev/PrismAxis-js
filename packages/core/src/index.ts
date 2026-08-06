@@ -6,6 +6,15 @@ export {
 } from "./GameObject";
 export { Scene, type SerializedScene } from "./Scene";
 
+export { AssetManager } from "./assets/AssetManager";
+export type {
+  AssetLoader,
+  AssetLoadContext,
+  AssetLoadOptions,
+  AssetProgress,
+  AssetState,
+} from "./assets/types";
+
 export { Behaviour } from "./components/Behaviour";
 export { Component, type SerializedComponent } from "./components/Component";
 export { Transform } from "./components/Transform";
