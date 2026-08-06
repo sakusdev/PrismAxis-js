@@ -54,7 +54,9 @@ export class AssetManager {
       if (options.onProgress) {
         existing.progressListeners.add(options.onProgress);
         void existing.promise.finally(() => {
-          existing.progressListeners.delete(options.onProgress as (progress: AssetProgress) => void);
+          existing.progressListeners.delete(
+            options.onProgress as (progress: AssetProgress) => void,
+          );
         });
       }
       return existing.promise;
