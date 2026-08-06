@@ -1,0 +1,1 @@
+Post-merge CI smoke test for AssetManager and glTF loading.
