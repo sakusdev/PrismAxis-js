@@ -52,12 +52,12 @@ export class AssetManager {
       }
       existing.references += 1;
       if (options.onProgress) {
-        existing.progressListeners.add(options.onProgress);
-        void existing.promise.finally(() => {
-          existing.progressListeners.delete(
-            options.onProgress as (progress: AssetProgress) => void,
-          );
-        });
+        const progressListener = options.onProgress;
+        existing.progressListeners.add(progressListener);
+        const removeProgressListener = (): void => {
+          existing.progressListeners.delete(progressListener);
+        };
+        void existing.promise.then(removeProgressListener, removeProgressListener);
       }
       return existing.promise;
     }
