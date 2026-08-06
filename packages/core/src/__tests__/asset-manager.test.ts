@@ -5,6 +5,16 @@ interface TestAsset {
   readonly url: string;
 }
 
+function createDeferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
+  });
+  return { promise, reject, resolve };
+}
+
 function createLoader() {
   const loader = {
     dispose: vi.fn<(asset: TestAsset) => void>(),
@@ -52,6 +62,27 @@ describe("AssetManager", () => {
     });
 
     expect(reports).toEqual([0.5]);
+  });
+
+  it("does not create an unhandled rejection when a shared load fails", async () => {
+    const manager = new AssetManager();
+    const deferred = createDeferred<TestAsset>();
+    const loader: AssetLoader<TestAsset> = {
+      dispose: vi.fn(),
+      load: vi.fn(() => deferred.promise),
+    };
+
+    const first = manager.load("broken", loader);
+    const second = manager.load("broken", loader, { onProgress: vi.fn() });
+    const failure = new Error("load failed");
+    deferred.reject(failure);
+
+    await Promise.all([
+      expect(first).rejects.toBe(failure),
+      expect(second).rejects.toBe(failure),
+    ]);
+    await Promise.resolve();
+    expect(manager.size).toBe(0);
   });
 
   it("aborts an in-flight request when its final reference is released", async () => {
