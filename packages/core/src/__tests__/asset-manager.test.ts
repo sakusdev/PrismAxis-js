@@ -5,14 +5,12 @@ interface TestAsset {
   readonly url: string;
 }
 
-function createLoader(): AssetLoader<TestAsset> & {
-  dispose: ReturnType<typeof vi.fn>;
-  load: ReturnType<typeof vi.fn>;
-} {
-  return {
-    dispose: vi.fn(),
-    load: vi.fn(async (url: string) => ({ url })),
-  };
+function createLoader() {
+  const loader = {
+    dispose: vi.fn<(asset: TestAsset) => void>(),
+    load: vi.fn(async (url: string): Promise<TestAsset> => ({ url })),
+  } satisfies AssetLoader<TestAsset>;
+  return loader;
 }
 
 describe("AssetManager", () => {
@@ -55,13 +53,15 @@ describe("AssetManager", () => {
 
   it("aborts an in-flight request when its final reference is released", async () => {
     const manager = new AssetManager();
-    let observedSignal: AbortSignal | null = null;
+    let wasAborted = false;
     const loader: AssetLoader<TestAsset> = {
       dispose: vi.fn(),
       load(_url, context) {
-        observedSignal = context.signal;
         return new Promise((_resolve, reject) => {
-          context.signal.addEventListener("abort", () => reject(new Error("aborted")));
+          context.signal.addEventListener("abort", () => {
+            wasAborted = context.signal.aborted;
+            reject(new Error("aborted"));
+          });
         });
       },
     };
@@ -69,7 +69,7 @@ describe("AssetManager", () => {
     const pending = manager.load("slow", loader);
     await manager.unload("slow");
 
-    expect(observedSignal?.aborted).toBe(true);
+    expect(wasAborted).toBe(true);
     await expect(pending).rejects.toThrow("aborted");
   });
 });
