@@ -14,24 +14,27 @@ function createLoader() {
 }
 
 describe("AssetManager", () => {
-  it("deduplicates concurrent requests and disposes after the last release", async () => {
-    const manager = new AssetManager();
-    const loader = createLoader();
+  it(
+    "deduplicates concurrent requests and disposes after the last release",
+    async () => {
+      const manager = new AssetManager();
+      const loader = createLoader();
 
-    const first = manager.load("/models/robot.glb", loader);
-    const second = manager.load("/models/robot.glb", loader);
+      const first = manager.load("/models/robot.glb", loader);
+      const second = manager.load("/models/robot.glb", loader);
 
-    expect(first).toBe(second);
-    expect(loader.load).toHaveBeenCalledTimes(1);
-    const asset = await first;
-    expect(manager.get<TestAsset>("/models/robot.glb")).toBe(asset);
+      expect(first).toBe(second);
+      expect(loader.load).toHaveBeenCalledTimes(1);
+      const asset = await first;
+      expect(manager.get<TestAsset>("/models/robot.glb")).toBe(asset);
 
-    await manager.unload("/models/robot.glb");
-    expect(loader.dispose).not.toHaveBeenCalled();
-    await manager.unload("/models/robot.glb");
-    expect(loader.dispose).toHaveBeenCalledOnce();
-    expect(manager.size).toBe(0);
-  });
+      await manager.unload("/models/robot.glb");
+      expect(loader.dispose).not.toHaveBeenCalled();
+      await manager.unload("/models/robot.glb");
+      expect(loader.dispose).toHaveBeenCalledOnce();
+      expect(manager.size).toBe(0);
+    },
+  );
 
   it("normalizes progress and broadcasts it to subscribers", async () => {
     const manager = new AssetManager();
